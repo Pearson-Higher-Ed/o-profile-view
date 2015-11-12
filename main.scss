@@ -1,0 +1,101 @@
+// External imports
+
+// @import 'o-grid/main';
+
+// Internal imports
+@import 'src/scss/variables';
+@import 'src/scss/mixins';
+
+@if not $o-profile-view-is-silent {
+	@include oYourComponentHello(world of Origami);
+}
+.edit{
+	color:black;
+	 padding: 8px 12px;
+}
+.myAvatarMsg{
+	color:blue;
+		font: 10px arial, sans-serif;
+
+}
+.avatarEditButton{
+	color:blue;
+		font: 10px arial, sans-serif;
+		visibility: hidden;
+
+}
+
+.o-input{
+  clear:both;
+  input, textarea{
+    float: left;
+    width: 75%
+
+  }
+  span{
+    clear: both;
+      float: left;
+  }
+
+}
+
+.o-profile__ct{
+  clear: both;
+  font-family:sans-serif;
+  .o-profile__left-column{
+    float: left;
+    width: 25%;
+  }
+  .o-profile__right-column{
+    float: left;
+    width: 75%;
+    hr {
+      height: 1px;
+      background: #cccccc;
+      border: none 0px;
+    }
+    .o-profile__detail-ct{
+      clear: both;
+      .o-profile__detail-avatar{
+        float: left;
+        width: 20%;
+        img {
+          width: 100px;
+          height: 100px;
+          border-radius: 100%;
+          border: solid 1px blue;
+        }
+      }
+      .o-profile__detail-table{
+        float: left;
+        width: 60%;
+        table tr td{
+          border-bottom: solid 1px #cccccc;
+        }
+      }
+      .o-profile__detail-edit{
+        width: 20%;
+        float: left;
+        a{
+          color: blue;
+        }
+				.o-profile__detail-cancel{
+	        width: 20%;
+	        float: left;
+					visibility: hidden;
+	        a{
+	          color: blue;
+	        }
+      }
+			.o-profile__detail-submit{
+				width: 20%;
+				float: left;
+				visibility: hidden;
+				a{
+					color: blue;
+				}
+		}
+    }
+  }
+}
+}
