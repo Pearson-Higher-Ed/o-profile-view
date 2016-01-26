@@ -1,20 +1,34 @@
 /*global require*/
-var ProfileView =require('../../main').UserProfileView;
-var UProfileView;
+const ProfileView =require('../../main').UserProfileView;
+let UProfileView;
 
 document.addEventListener("DOMContentLoaded", function() {
-	"use strict";
-	var token = document.getElementById('htmlToken').value;
-  var piid = document.getElementById('htmlPIid').value
-	var url = document.getElementById('htmlURL').value
+
+	let token = document.getElementById('htmlToken').value;
+  let piid = document.getElementById('htmlPIid').value
+	let url = document.getElementById('htmlURL').value
 	// make a new UserProfileView
-	UProfileView = new ProfileView(url, token);
-	// attach it to the  demoProfile tag
-	UProfileView.addUserProfileView(document.getElementById("demoProfile"))
+  // url is the userprofile service url
+	UProfileView = new ProfileView(url, token, document.getElementById("demoProfile"));
+
+	// exclude fields: username, name, email, bio
+	UProfileView.excludeField("username");
+	// UProfileView.excludeField("name");
+	// UProfileView.excludeField("bio");
+	// UProfileView.excludeField("email");
+
 	// update the profile
-	UProfileView.getUserProfile(piid);
+	UProfileView.setId(piid);
+
+	let imgUrl ="http://epspqa.stg-openclass.com/grid-registrar/api/item/4fd4ea37-7c5b-43ce-a3f3-96875c761066/1/file/ffffffff568d8db6e4b0fc33553eb238.jpg";
+//UProfileView.getProfile().avatar;
+
+	var img = document.createElement("img");
+	img.src = imgUrl;
+  console.log("image source: "+ imgUrl);
 
 	document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
+
 });
 
 //

@@ -1,83 +1,85 @@
-"use strict";
 
-var view = requireText("../html/UserProfileView.html");
-var UProfileService = require("o-profile-service").UserProfileService;
-var EDIT = "Edit Bio"
-var SUBMIT = "Submit"
-var updateMsg = 'Update Profile Picture'
-var loadingMsg = 'Loading Picture'
-var unknownImage = "https://www.lariba.com/site/images/testimg/question.jpeg"
-var loadingImage = "http://www.colorado.edu/Sociology/gimenez/graphics/gears.gif"
+const view = requireText("../html/UserProfileView.html");
 
-function ProfileView(url, token) {
+const AvatarView =require('o-avatar').AvatarView;
+
+const UProfileService = require("o-profile-service").UserProfileService;
+const USERPROFILE_BIO_MAXCHARACTERS=256;
+// ffffffff56686eaae4b0e03c2cdad8de  test user
+// test user 2 ffffffff568d8db6e4b0fc33553eb238
+
+function ProfileView(url, token, element) {
 	this.service = new UProfileService(url, token);
 	this.profileData = {};
-	return this;
-}
 
-ProfileView.prototype.addUserProfileView = function (element) {
-	var container = document.createElement('div');
-	container.id = 'o-profile-view';
+	const container = document.createElement('div');
 	container.innerHTML = view;
 
 	element.appendChild(container);
-	var self = this;
-	element.querySelector("#myEditButton").addEventListener("click", function () {
+	this.AView = new AvatarView(url, token,
+		element.querySelector(".o-profile__detail-avatar"), "200px", true);
+
+	let self = this;
+	element.querySelector(".o-profile--label-edit-link").addEventListener("click", function () {
 		self.setEditable();
 		// this is #myEditButton
 	});
-	element.querySelector("#myCancelButton").addEventListener("click", function () {
-		// reset userprofile
- 		self.cancelEdit();
+	element.querySelector(".o-profile--bio-target-add").addEventListener("click", function () {
+		self.setEditable();
+		// this is #myEditButton
 	});
-
-	element.querySelector("#myAvatar").addEventListener("error", function () {
+	element.querySelector(".o-profile--cancel-edit").addEventListener("click", function () {
 		// reset userprofile
-		console.log('error loading avatar');
-		element.querySelector("#myAvatar").src=unknownImage;
-	});
 
-	element.querySelector("#mySubmitButton").addEventListener("click", function () {
+		self.cancelEdit();
+	});
+	element.querySelector(".o-profile--submit-bio").addEventListener("click", function (event) {
 		// update data
+		event.preventDefault();
 		self.submitData();
 	});
-	element.querySelector("#myAvatarMsg").addEventListener("click", function () {
-		element.querySelector("#avatarEditButton").click();
-		// this sends the click from the nice message button to the real button
-	});
 
-	element.querySelector("#avatarEditButton").addEventListener("change", function () {
-		self.addAvatar();
-		// once the file is chosen this sets the avatar
-	});
+		document.getElementById('o-profile--bio-edit-textarea').addEventListener("keyup", function (event) {
+			// update data
+			event.preventDefault();
+			self.checkCharactersLeftInBio();
+
+		});
+
 	self.unsetEditable();
+
+	return this;
 }
 
-ProfileView.prototype.updateCallback = function (err, text) {
-	if (err != null) {
-		console.error("There has been an error setting profile: " + err.responseText)
-		return;
-	}
-}
+ProfileView.prototype.getProfile = function () {
+	return this.profileData;
+};
 
-
-ProfileView.prototype.getUserProfile = function (id) {
+ProfileView.prototype.setId = function (id) {
 	this.service.getProfile(id, this.callback.bind(this));
+	this.AView.setUser(id);
 }
 
 ProfileView.prototype.updateUserProfile = function (id, data) {
 	this.service.setProfile(id, data, this.callback.bind(this));
+		this.AView.setUser(id);
 };
 
 ProfileView.prototype.setToken = function (token) {
 	this.service.token = token;
+	this.AView.setToken(token);
 };
 
 ProfileView.prototype.submitData = function () {
 	console.log("submit")
+	if(this.checkCharactersLeftInBio() <0){
+		console.log("trying to submit too many characters");
+		return;
+	}
 	this.unsetEditable();
-	this.profileData.aboutMini = document.getElementById('myBio').textContent;
-	var self = this;
+	this.profileData.aboutMini = 	document.getElementById('o-profile--bio-edit-textarea').value;
+	console.log("setting profiledata "+ this.profileData.aboutMini);
+	let self = this;
 	this.service.setProfile(this.profileData.id, JSON.stringify(this.profileData), function (err, txt) {
 		self.callback(err, txt);
 
@@ -85,30 +87,19 @@ ProfileView.prototype.submitData = function () {
 };
 
 ProfileView.prototype.setEditable = function () {
-	console.log("edit")
-	var v = document.querySelectorAll(".edit");
-	var i;
-	for (i = 0; i < v.length; i++) {
-		v[i].style.color = "blue";
-		v[i].style.border = "solid 1px blue";
-		v[i].contentEditable = "true";
-	};
-	document.querySelector(".o-profile__detail-cancel").style.visibility = "visible";
-	document.querySelector(".o-profile__detail-submit").style.visibility = "visible";
-	document.querySelector(".o-profile__detail-edit").style.visibility = "hidden";
+	document.getElementById('o-profile--bio-edit-textarea').value = this.profileData.aboutMini || "Your Bio Here";
+	document.querySelector(".o-profile--bio-edit-form").style.display = "block";
+	document.querySelector(".o-profile--label-edit-link").style.display = "none";
+	document.querySelector(".o-profile--bio-target").style.display = "none";
+	document.querySelector('.o-profile--bio-target-add').style.display ="none" ;
+	this.checkCharactersLeftInBio();
+
 };
 
 ProfileView.prototype.unsetEditable = function () {
-	var v = document.querySelectorAll(".edit");
-	var i;
-	for (i = 0; i < v.length; i++) {
-		v[i].style.color = "black";
-		v[i].style.border = "none";
-		v[i].contentEditable = "false";
-	};
-	document.querySelector(".o-profile__detail-cancel").style.visibility = "hidden";
-	document.querySelector(".o-profile__detail-submit").style.visibility = "hidden";
-	document.querySelector(".o-profile__detail-edit").style.visibility = "visible";
+	document.querySelector(".o-profile--bio-edit-form").style.display = "none";
+	document.querySelector(".o-profile--label-edit-link").style.display = "block";
+	document.querySelector(".o-profile--bio-target").style.display = "block";
 };
 
 ProfileView.prototype.cancelEdit = function () {
@@ -116,13 +107,31 @@ ProfileView.prototype.cancelEdit = function () {
 		this.getUserProfile(this.profileData.id);
 }
 
+ProfileView.prototype.checkCharactersLeftInBio = function () {
+	var count =document.getElementById('o-profile--bio-edit-textarea').value.length;
 
+	if( count > USERPROFILE_BIO_MAXCHARACTERS){
+		document.querySelector(".o-profile--submit-bio").style.display = "none";
+		document.querySelector('.o-profile__detail-count').innerHTML ="Too Many Characters: "+ (count - USERPROFILE_BIO_MAXCHARACTERS);
+	}else{
+		document.querySelector(".o-profile--submit-bio").style.display = "block";
+		document.querySelector('.o-profile__detail-count').innerHTML ="Characters Left: "+ (USERPROFILE_BIO_MAXCHARACTERS-count);
+	}
 
+	// return the characters left (neg means overrun)
+	return (USERPROFILE_BIO_MAXCHARACTERS-count);
+}
+
+ProfileView.prototype.excludeField = function (fieldToExclude) {
+	let classToExclude = ".o-profile__"+fieldToExclude;
+	document.querySelector(classToExclude).style.display = "none";
+
+}
 
 
 
 ProfileView.prototype.callback = function (err, text) {
-	if (err != null) {
+	if (err !== null) {
 		console.error("There has been an error getting profile: " + err.responseText)
 		return;
 	}
@@ -134,37 +143,37 @@ ProfileView.prototype.callback = function (err, text) {
 		console.error(e, "profile json not well formed: " + text);
 		this.profileData = {};
 	}
-	var pd = this.profileData;
+	let pd = this.profileData;
 
-	console.log(pd);
-	document.getElementById('myUserName').textContent = pd.userName || "undefined"
-	document.getElementById('myName').textContent = (pd.firstName + pd.lastName) || "Your name has not been added";
-	document.getElementById('myEmail').textContent = pd.email || "Your email is undefined"
-	document.getElementById('myEmail2').textContent = pd.email || "Your email is undefined"
-	document.getElementById('myBio').textContent = pd.aboutMini || "Add a Bio"
-	document.getElementById('myAvatar').src = pd.avatar || "Add an Avatar"
+	if( ! pd.aboutMini || pd.aboutMini === "" ){
+		// nothing here
+		document.querySelector('.o-profile--bio-target-add').style.display ="block" ;
+		document.querySelector(".o-profile--label-edit-link").style.display = "none";
+		document.querySelector('.o-profile--bio-target').textContent = "";
+	}else{
+		// got something in the bio
 
-};
+		document.querySelector('.o-profile--bio-target-add').style.display ="none" ;
+		// if there are links they need to be translated to anchors
 
-ProfileView.prototype.addAvatar = function () {
-	var fileSelected = document.querySelector("#avatarEditButton").files;
-	if (fileSelected.length > 0) {
-		console.log("my files" + fileSelected[0].name);
-		var self = this;
-		document.getElementById('myAvatarMsg').textContent = loadingMsg;
-		document.querySelector("#myAvatar").src=loadingImage;
+		let inputText = pd.aboutMini;
+		let replacedText;
+		let replacePattern1;
 
-		this.service.setAvatar(this.profileData.id, fileSelected[0], function (err, txt) {
+	 //URLs starting with http://, https://, or ftp://
+	 replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+	 replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
 
-			// the avatar upload process is asyncronous and we need to wait a bit before the image is availible to us
-			setTimeout(function () {
-				self.callback(err, txt);
-				document.getElementById('myAvatarMsg').textContent = updateMsg;
-			}, 2000);
-
-		});
+	 document.querySelector('.o-profile--bio-target').innerHTML = replacedText;
 
 	}
+
+	console.log(pd);
+	document.querySelector('.o-profile--user-name-target').textContent = pd.userName || "your username is currently undefined"
+	document.querySelector('.o-profile--name-target').textContent = (pd.firstName +" "+ pd.lastName) || "Your name has not been added";
+	//document.getElementById('myEmail').textContent = pd.email || "Your email is undefined"
+	document.querySelector('.o-profile--email-target').textContent = pd.email || "Your email is undefined"
+
 };
 
 

@@ -3,50 +3,29 @@
 // @import 'o-grid/main';
 
 // Internal imports
+@import 'o-avatar/main';
+@import 'o-icons/main';
 @import 'src/scss/variables';
 @import 'src/scss/mixins';
+
+@include oIconsInclude(oc-icons);
+
 
 @if not $o-profile-view-is-silent {
 	@include oYourComponentHello(world of Origami);
 }
-.edit{
-	color:black;
-	 padding: 8px 12px;
-}
-.myAvatarMsg{
-	color:blue;
-		font: 10px arial, sans-serif;
 
-}
-.avatarEditButton{
-	color:blue;
-		font: 10px arial, sans-serif;
-		visibility: hidden;
-
-}
-
-.o-input{
-  clear:both;
-  input, textarea{
-    float: left;
-    width: 75%
-
-  }
-  span{
-    clear: both;
-      float: left;
-  }
-
-}
-
-.o-profile__ct{
+.o-profile__ct {
   clear: both;
-  font-family:sans-serif;
-  .o-profile__left-column{
+  font-family: sans-serif;
+
+  .o-profile__left-column {
     float: left;
-    width: 25%;
+    width: 250px;
+ 		top: 50%;
+ 		transform: translateY(50%);
   }
-  .o-profile__right-column{
+  .o-profile__right-column {
     float: left;
     width: 75%;
     hr {
@@ -54,48 +33,95 @@
       background: #cccccc;
       border: none 0px;
     }
-    .o-profile__detail-ct{
+    .o-profile__detail-ct {
       clear: both;
-      .o-profile__detail-avatar{
+      .o-profile__detail-avatar {
         float: left;
         width: 20%;
-        img {
-          width: 100px;
-          height: 100px;
-          border-radius: 100%;
-          border: solid 1px blue;
-        }
+
       }
-      .o-profile__detail-table{
+      .o-profile__detail-table {
         float: left;
         width: 60%;
-        table tr td{
+        table tr td {
           border-bottom: solid 1px #cccccc;
         }
       }
-      .o-profile__detail-edit{
-        width: 20%;
-        float: left;
-        a{
-          color: blue;
-        }
-				.o-profile__detail-cancel{
-	        width: 20%;
-	        float: left;
-					visibility: hidden;
-	        a{
-	          color: blue;
-	        }
-      }
-			.o-profile__detail-submit{
-				width: 20%;
-				float: left;
-				visibility: hidden;
-				a{
-					color: blue;
+			.o-profile--detail-label {
+				border-bottom: solid 1px gray;
+				font-weight: bold;
+				margin-top: 35px;
+			}
+			.o-profile--label-edit-link {
+				float: right;
+				color: blue;
+				font: 16px;
+			}
+			.o-profile--clearfix {
+				clear: both;
+			}
+			.o-profile--bio-edit-form {
+				margin-top: 12px;
+				// background: yellow;
+				padding: 12px;
+				position: relative;
+				border-radius: 6px;
+				// border: 1px solid orange;
+				textarea {
+					display: block;
+					width: 100%;
+					height: 250px;
 				}
-		}
-    }
-  }
-}
+			}
+      .o-profile__detail-edit {
+        width: 40%;
+        // float: right;
+
+			}
+			.o-profile__detail-count {
+				width: 40%;
+				float: right;
+				font: 11px arial, sans-serif;
+				position: absolute;
+				bottom: 50px;
+				right: 0px;
+			}
+			.o-profile--cancel-edit {
+				float: left;
+
+			}
+			.o-profile--submit-bio {
+					display: block;
+				width: 60px;
+				float: right;
+				border-radius: 3px;
+				padding: 6px 12px;
+				background: blue;
+				background-color: #0E67A9;
+				color: #FFF;
+				line-height: 1.42857;
+			}
+
+			.o-profile--bio-target-add {
+				width: 150px;
+
+				background: none;
+				border: none;
+				padding: 4px 1px ;
+				font: 16px arial, sans-serif;
+				font-weight: 400;
+				color: blue;
+			}
+
+			.oc-icon-add {
+				width: 100px;
+				border-radius: 100%;
+				border: 1px solid blue;
+				// padding: 2px ;
+				// background: blue;
+				color: blue;
+				margin-right: 10px;
+			}
+  	}
+	}
 }

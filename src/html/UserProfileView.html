@@ -1,61 +1,61 @@
 <div class="o-profile__ct">
   <div class="o-profile__left-column">
-    <h3>My Profile</h3>
+    <div class="o-profile__detail-avatar">
+    </div>
+
   </div>
   <div class="o-profile__right-column">
-    <h4 id="myEmail">Email Undefined</h4>
-    <hr/>
     <div class="o-profile__detail-ct">
-      <div class="o-profile__detail-avatar">
-        <b>Profile</b>
-        <br/>
-        <img id="myAvatar"
-            class="o-profile__detail-avatar-actual"
-            src="https://www.lariba.com/site/images/testimg/question.jpeg"  />
-        <br/>
-        <button id="myAvatarMsg" class="myAvatarMsg" type="button">
-          Update Profile Picture
-        </button>
-        <div class="avatarEditButton">
-
-          <input type="file" id="avatarEditButton" />
-        </div>
-      </div>
+        <h2>My Profile</h2>
       <div class="o-profile__detail-table">
+        <div class="o-profile__username">
+          <div class="o-profile--detail-label">
+            Username
+          </div>
 
-        <table>
-          <tr>
-            <td width="150">User Name</td>
-            <td id=myUserName>undefined</td>
-          </tr>
-          <tr>
-            <td width="150">Name</td>
-            <td id=myName>undefined</td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td id="myEmail2">undefined</td>
-          </tr>
-          <tr>
-            <td>Bio</td>
-            <td id='myBio' class="edit">undefined</td>
-            <!-- <td>
-              <div class="o-profile__detail-edit">
-                <button id="myEditButton" type="button">Edit Bio</button>
-              </div>
-            </td> -->
-          </tr>
-        </table>
+          <div class="o-profile--user-name-target"></div>
+        </div>
+        <div class="o-profile__name">
+          <div class="o-profile--detail-label">
+            Name
+          </div>
+          <div class="o-profile--name-target"></div>
+        </div>
 
-      </div>
-      <div class="o-profile__detail-edit">
-        <button id="myEditButton" type="button">Edit Bio</button>
-      </div>
-      <div class="o-profile__detail-submit">
-        <button id="mySubmitButton" type="button">Submit</button>
-      </div>
-      <div class="o-profile__detail-cancel">
-        <button id="myCancelButton" type="button">Cancel</button>
+        <div class="o-profile__email">
+          <div class="o-profile--detail-label">
+            Email
+          </div>
+          <div class="o-profile--email-target"></div>
+        </div>
+
+        <div class="o-profile__bio">
+          <div class="o-profile--detail-label">
+            Bio
+              <!-- <button id="myEditButton" type="button">Edit</button> -->
+            <a href="#" class="o-profile--label-edit-link">Edit</a>
+          </div>
+          <form class="o-profile--bio-edit-form">
+            <textarea id="o-profile--bio-edit-textarea"></textarea>
+            <div class="o-profile__detail-count">
+              Hello world
+            </div>
+            <div class="o-profile__detail-submit">
+
+            </div>
+            <a href="#" class="o-profile--cancel-edit">Cancel</a>
+            <input type="submit" name="submit" value="Save" class="o-profile--submit-bio" />
+            <div class="o-profile--clearfix"></div>
+          </form>
+          <div class="o-profile--bio-target">
+          </div>
+          <button class="o-profile--bio-target-add">
+            <i class="oc-icon-add"></i>Add a bio
+          </button>
+        </div>
+
+
+
       </div>
 
     </div>

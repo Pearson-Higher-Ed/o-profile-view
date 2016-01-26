@@ -2,3 +2,19 @@ $o-assets-global-path: '/bower_components/';
 $o-profile-view-is-silent: false;
 
 @import '../../main';
+
+
+.o-input {
+  clear:both;
+  input,
+	textarea {
+    float: left;
+    width: 75%
+
+  }
+  span {
+    clear: both;
+      float: left;
+  }
+
+}
