@@ -1,7 +1,7 @@
 {
   "name": "o-profile-view",
   "dependencies": {
-      "o-avatar": "~0.1.2"
+      "o-avatar": "~0.1.6"
   },
   "main": [
     "main.scss",

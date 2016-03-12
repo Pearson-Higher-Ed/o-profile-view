@@ -7,6 +7,7 @@
 @import 'o-icons/main';
 @import 'src/scss/variables';
 @import 'src/scss/mixins';
+@import 'node_modules/pearson-elements/scss/elements';
 
 @include oIconsInclude(oc-icons);
 
@@ -92,14 +93,14 @@
 			}
 			.o-profile--submit-bio {
 					display: block;
-				width: 60px;
+				// width: 80px;
 				float: right;
-				border-radius: 3px;
-				padding: 6px 12px;
-				background: blue;
-				background-color: #0E67A9;
-				color: #FFF;
-				line-height: 1.42857;
+				// border-radius: 3px;
+				// padding: 6px 12px;
+				// background: blue;
+				// background-color: #0E67A9;
+				// color: #FFF;
+				// line-height: 1.42857;
 			}
 
 			.o-profile--bio-target-add {

@@ -6,34 +6,33 @@
   </div>
   <div class="o-profile__right-column">
     <div class="o-profile__detail-ct">
-        <h2>My Profile</h2>
+        <h2 class="o-localizable">profile.title</h2>
       <div class="o-profile__detail-table">
         <div class="o-profile__username">
-          <div class="o-profile--detail-label">
-            Username
+          <div class="o-profile--detail-label o-localizable">
+            profile.username
           </div>
 
           <div class="o-profile--user-name-target"></div>
         </div>
         <div class="o-profile__name">
-          <div class="o-profile--detail-label">
-            Name
+          <div class="o-profile--detail-label o-localizable">
+            profile.name
           </div>
           <div class="o-profile--name-target"></div>
         </div>
 
         <div class="o-profile__email">
-          <div class="o-profile--detail-label">
-            Email
+          <div class="o-profile--detail-label o-localizable">
+            profile.email
           </div>
           <div class="o-profile--email-target"></div>
         </div>
 
         <div class="o-profile__bio">
           <div class="o-profile--detail-label">
-            Bio
-              <!-- <button id="myEditButton" type="button">Edit</button> -->
-            <a href="#" class="o-profile--label-edit-link">Edit</a>
+            <span class="o-localizable"> profile.bio </span>
+            <a href="#" class="o-profile--label-edit-link o-localizable">profile.edit</a>
           </div>
           <form class="o-profile--bio-edit-form">
             <textarea id="o-profile--bio-edit-textarea"></textarea>
@@ -43,14 +42,17 @@
             <div class="o-profile__detail-submit">
 
             </div>
-            <a href="#" class="o-profile--cancel-edit">Cancel</a>
-            <input type="submit" name="submit" value="Save" class="o-profile--submit-bio" />
+            <a href="#" class="o-profile--cancel-edit o-localizable">profile.cancel</a>
+            <div class="o-profile--submit-bio pe-btn pe-btn--primary o-localizable" >
+              profile.save
+          </div>
             <div class="o-profile--clearfix"></div>
           </form>
           <div class="o-profile--bio-target">
           </div>
-          <button class="o-profile--bio-target-add">
-            <i class="oc-icon-add"></i>Add a bio
+          <button class="o-profile--bio-target-add ">
+            <i class="oc-icon-add"></i>
+            <span class="o-localizable">profile.addabio </span>
           </button>
         </div>
 

@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	let url = document.getElementById('htmlURL').value
 	// make a new UserProfileView
   // url is the userprofile service url
-	UProfileView = new ProfileView(url, token, document.getElementById("demoProfile"));
+	UProfileView = new ProfileView(
+		url,
+		token,
+		document.getElementById("demoProfile"),
+		"french");
 
 	// exclude fields: username, name, email, bio
 	UProfileView.excludeField("username");

@@ -1,6 +1,6 @@
 
 const view = requireText("../html/UserProfileView.html");
-
+const translation = requireText("../translation/profileTranslations.json");
 const AvatarView =require('o-avatar').AvatarView;
 
 const UProfileService = require("o-profile-service").UserProfileService;
@@ -8,16 +8,28 @@ const USERPROFILE_BIO_MAXCHARACTERS=256;
 // ffffffff56686eaae4b0e03c2cdad8de  test user
 // test user 2 ffffffff568d8db6e4b0fc33553eb238
 
-function ProfileView(url, token, element) {
+function ProfileView(url, token, element, language) {
+	this.translator = new Translator(language);
+	this.emailError = this.translator.translate("profile.email.error");
+	this.editBio = this.translator.translate("profile.edit.bio");
+	this.tooManyCharacters = this.translator.translate("profile.characters.error");
+	this.charactersLeft = this.translator.translate("profile.characters.left");
+	this.yourBioHere = this.translator.translate("profile.bio.here");
+	this.noUserName = this.translator.translate("profile.username.error");
+	this.noName = this.translator.translate("profile.name.error");
+
+
 	this.service = new UProfileService(url, token);
 	this.profileData = {};
 
 	const container = document.createElement('div');
 	container.innerHTML = view;
 
+	 this.translator.translateHTML(container);
 	element.appendChild(container);
+
 	this.AView = new AvatarView(url, token,
-		element.querySelector(".o-profile__detail-avatar"), "200px", true);
+		element.querySelector(".o-profile__detail-avatar"), "200px", true, language);
 
 	let self = this;
 	element.querySelector(".o-profile--label-edit-link").addEventListener("click", function () {
@@ -87,7 +99,7 @@ ProfileView.prototype.submitData = function () {
 };
 
 ProfileView.prototype.setEditable = function () {
-	document.getElementById('o-profile--bio-edit-textarea').value = this.profileData.aboutMini || "Your Bio Here";
+	document.getElementById('o-profile--bio-edit-textarea').value = this.profileData.aboutMini || this.editBio;
 	document.querySelector(".o-profile--bio-edit-form").style.display = "block";
 	document.querySelector(".o-profile--label-edit-link").style.display = "none";
 	document.querySelector(".o-profile--bio-target").style.display = "none";
@@ -112,10 +124,10 @@ ProfileView.prototype.checkCharactersLeftInBio = function () {
 
 	if( count > USERPROFILE_BIO_MAXCHARACTERS){
 		document.querySelector(".o-profile--submit-bio").style.display = "none";
-		document.querySelector('.o-profile__detail-count').innerHTML ="Too Many Characters: "+ (count - USERPROFILE_BIO_MAXCHARACTERS);
+		document.querySelector('.o-profile__detail-count').innerHTML =this.tooManyCharacters+": "+ (count - USERPROFILE_BIO_MAXCHARACTERS);
 	}else{
 		document.querySelector(".o-profile--submit-bio").style.display = "block";
-		document.querySelector('.o-profile__detail-count').innerHTML ="Characters Left: "+ (USERPROFILE_BIO_MAXCHARACTERS-count);
+		document.querySelector('.o-profile__detail-count').innerHTML =this.charactersLeft+": "+ (USERPROFILE_BIO_MAXCHARACTERS-count);
 	}
 
 	// return the characters left (neg means overrun)
@@ -169,13 +181,49 @@ ProfileView.prototype.callback = function (err, text) {
 	}
 
 	console.log(pd);
-	document.querySelector('.o-profile--user-name-target').textContent = pd.userName || "your username is currently undefined"
-	document.querySelector('.o-profile--name-target').textContent = (pd.firstName +" "+ pd.lastName) || "Your name has not been added";
+	document.querySelector('.o-profile--user-name-target').textContent = pd.userName || this.noUserName
+	document.querySelector('.o-profile--name-target').textContent = (pd.firstName +" "+ pd.lastName) || this.noName;
 	//document.getElementById('myEmail').textContent = pd.email || "Your email is undefined"
-	document.querySelector('.o-profile--email-target').textContent = pd.email || "Your email is undefined"
+	document.querySelector('.o-profile--email-target').textContent = pd.email || this.emailError
 
 };
 
+// *************************************
+function Translator(locale) {
+  console.log("in profile translator")
+  this.locale = locale;
+  let datafile = JSON.parse( translation);
+  if(! this.locale){
+      console.log('no localization chosen choose english as default');
+      this.translation = datafile["english"];
+  }else{
+    this.translation = datafile[this.locale];
+  }
+  if(! this.translation){
+      this.translation = datafile["english"];
+  }
+  console.log("translation file", JSON.stringify(this.translation ));
+	return this;
+};
+
+Translator.prototype.translate= function(tag) {
+  let phrase = this.translation[tag.trim()];
+  if(!phrase){
+    console.log("translator: can not translate: ", tag);
+    phrase = tag;
+  };
+  return phrase;
+};
+
+Translator.prototype.translateHTML= function(element) {
+	let elems =	element.querySelectorAll(".o-localizable");
+  let i=0;
+  for(i =0; i < elems.length; i++){
+    // console.log("translate localization",  elems[i].innerHTML);
+    elems[i].innerHTML = this.translate(elems[i].innerHTML);
+    // console.log("translated to",  elems[i].innerHTML);
+  };
+};
 
 
 module.exports = ProfileView;
