@@ -8,7 +8,7 @@ const USERPROFILE_BIO_MAXCHARACTERS=256;
 // ffffffff56686eaae4b0e03c2cdad8de  test user
 // test user 2 ffffffff568d8db6e4b0fc33553eb238
 
-function ProfileView(url, token, element, language) {
+function ProfileView(service, element, language) {
 	this.translator = new Translator(language);
 	this.emailError = this.translator.translate("profile.email.error");
 	this.editBio = this.translator.translate("profile.edit.bio");
@@ -19,7 +19,7 @@ function ProfileView(url, token, element, language) {
 	this.noName = this.translator.translate("profile.name.error");
 
 
-	this.service = new UProfileService(url, token);
+	this.service = service;
 	this.profileData = {};
 
 	const container = document.createElement('div');
@@ -28,7 +28,7 @@ function ProfileView(url, token, element, language) {
 	 this.translator.translateHTML(container);
 	element.appendChild(container);
 
-	this.AView = new AvatarView(url, token,
+	this.AView = new AvatarView(service,
 		element.querySelector(".o-profile__detail-avatar"), "200px", true, language);
 
 	let self = this;
@@ -76,12 +76,7 @@ ProfileView.prototype.updateUserProfile = function (id, data) {
 	this.service.setProfile(id, data, this.callback.bind(this));
 		this.AView.setUser(id);
 };
-
-ProfileView.prototype.setToken = function (token) {
-	this.service.token = token;
-	this.AView.setToken(token);
-};
-
+ 
 ProfileView.prototype.submitData = function () {
 	console.log("submit")
 	if(this.checkCharactersLeftInBio() <0){

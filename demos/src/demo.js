@@ -1,5 +1,6 @@
 /*global require*/
 const ProfileView =require('../../main').UserProfileView;
+const UProfileService = require("o-profile-service").UserProfileService;
 let UProfileView;
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -7,13 +8,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	let token = document.getElementById('htmlToken').value;
   let piid = document.getElementById('htmlPIid').value
 	let url = document.getElementById('htmlURL').value
+
+
+	// url is the userprofile service url
+	let service = new UProfileService(url, token);
+
 	// make a new UserProfileView
-  // url is the userprofile service url
 	UProfileView = new ProfileView(
-		url,
-		token,
+		service,
 		document.getElementById("demoProfile"),
-		"french");
+		"english");
 
 	// exclude fields: username, name, email, bio
 	UProfileView.excludeField("username");
