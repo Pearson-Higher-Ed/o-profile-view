@@ -28,12 +28,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	// update the profile
 	UProfileView.setId(piid);
 
-	let imgUrl ="http://epspqa.stg-openclass.com/grid-registrar/api/item/4fd4ea37-7c5b-43ce-a3f3-96875c761066/1/file/ffffffff568d8db6e4b0fc33553eb238.jpg";
-//UProfileView.getProfile().avatar;
-
-	var img = document.createElement("img");
-	img.src = imgUrl;
-  console.log("image source: "+ imgUrl);
 
 	document.dispatchEvent(new CustomEvent('o.DOMContentLoaded'));
 

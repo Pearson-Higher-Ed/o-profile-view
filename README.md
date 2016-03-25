@@ -1,48 +1,36 @@
 # o-profile-view
 
-Project structure for new Origami components.
+The user profile view lets one see data from the user profile service.  
+Currently the data available are:
+  user name
+  first and last name
+  email
+  bio
+  and avatar
 
-**Note:** This is not a usable Origami component. Once you have completed the steps for creating and deploying the new module, replace this README with the provided template:
 
-```
-mv README.md.template README.md
-```
+## Instantiation and options:
+  UProfileView = new ProfileView(
+    service,    // ( This is the user profile service with calls  call backs for userprofile data.
+                // the o-Userprofile-Service is a reference implementation.  )
+    document.getElementById("demoProfile"),// (This is the element of the document that the user profile view  will be placed upon)
+    "english");  // one of the supported languages in the translation directory's translation file.  The default is english.
 
-### Creating a new Origami Module
+## removing fields
+  fields can be excluded if one doesn't want to show all elements of the user profileTranslations
 
-1. Clone this repository into a new folder:
+  UProfileView.excludeField("username");
 
-  ```
-  git clone https://github.com/Pearson-Higher-Ed/o-profile-view.git o-your-component
-  ```
-2. Search `o-profile-view` and replace with `o-your-component`:
+##Language support
+  In the translations folder there is a profileTranslations.json file that contains key-value pairs from tag to translation.  The english translations can be used as a guide to create other translations in other languages.
 
-  ```
-  find . -name '*.*' -type f -print -exec sed -i '' 's/o-profile-view/o-your-component/g' {} \;
-  ```
-3. Search `oYourComponent` and replace with `oYourComponent`:
+## setting the Pi Id
+    Once an user profile view component is created the pi id is set to link the user profile view to a specific account.
 
-  ```
-  find . -name '*.*' -type f -print -exec sed -i '' 's/oYourComponent/oYourComponent/g' {} \;
-  ```
-4. Re-name the component in the description field of `origami.json`
+    UProfileView.setId(piid);
 
-### Deploying for the first time
+## editing the data
+  At the current time the decision has been made to not edit the user name, email, or first and last name as this is the pervue of the pi service and their components.
 
-1. Create a new repository ([GitHub](https://github.com/Pearson-Higher-Ed) for OSS or [Stash](https://devops-tools.pearson.com/stash/) for internal components). If you are deploying to GitHub, you may need to make a request to one of the organization's [owners](https://github.com/orgs/Pearson-Higher-Ed/teams/owners) to create the repository.
-2. Delete the existing Git directory: `rm -Rf .git`
-3. Initialize a new local Git repository: `git init .`
-4. Add the remote repository:
-
-  ```
-  git remote add origin https://github.com/Pearson-Higher-Ed/o-your-component.git
-  ```
-5. Install dependencies: `obt install`
-6. Test and verify: `obt test && obt verify`
-7. Commit and push: `git add . && git commit -m "Initial commit" && git push origin master`
-
-----
-
-## License
-
-This is a fork of [Financial-Times/o-profile-view](https://github.com/Financial-Times/o-profile-view), which is published by the Financial Times under the [MIT license](http://opensource.org/licenses/MIT).
+  The bio is editable and the number of characters in the bio is at this point limited to 256
+  The avatar is also editable (see o-avatar component for details)
